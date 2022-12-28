@@ -28,16 +28,26 @@ ull isqrt(ull i)
     return l;
 }
 
+void show_help(char* argv0)
+{
+    fprintf(stderr, "Usage: %s [max]\n", argv0);
+}
+
 int main(int argc, char** argv)
 {
     if(argc <= 1)
     {
-        fprintf(stderr, "Usage: %s [max]\n", argv[0]);
+        show_help(argv[0]);
         return EXIT_FAILURE;
     }
 
     // check primes up to primes_stop
-    ull primes_stop = atoll(argv[1]);
+    ull primes_stop = strtoull(argv[1], NULL, 10);
+    if(primes_stop == 0)
+    {
+        show_help(argv[0]);
+        return EXIT_FAILURE;
+    }
 
     ull array_max = 1;
     ull old_size = SIZE;
