@@ -1,8 +1,10 @@
+FILES = main.c args.c
+
 default:
-	gcc -std=c99 -Os -Wall -Wextra -Wpedantic -Wconversion -Wvla -march=native main.c -o np
+	gcc -std=c99 -Os -Wall -Wextra -Wpedantic -Wconversion -Wvla -march=native $(FILES) -o primes
 
 clean:
-	rm ./np*
+	rm ./primes*
 
 bear:
 	make clean ; bear -- make

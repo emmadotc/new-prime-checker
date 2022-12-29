@@ -5,5 +5,8 @@ this is a (barebones for now) rewrite of my previous prime checker
 `make`
 
 ### usage
-`.np [max]`
-it will check for primes in range of 0-`max`
+`Usage: ./primes range [args]
+  Check primes from 0 to range (Maximum 18446744073709551615)
+
+Args:    -p, --print        Print primes found`
+
