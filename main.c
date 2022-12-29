@@ -53,7 +53,11 @@ int main(int argc, char** argv)
 
     _Args args;
     init_args(&args);
-    parse_args(argc, argv, &args);
+    if(!parse_args(argc, argv, &args))
+    {
+        show_help(argv[0]);
+        return EXIT_FAILURE;
+    }
 
     /* check primes up to primes_stop */
     ull primes_stop = strtoull(argv[1], NULL, 10);
