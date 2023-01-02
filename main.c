@@ -52,12 +52,25 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    ull array_max = 0;
-    ull *primes = NULL;
-
-    clock_t begin_primes = clock();
-    if(!simple_for(primes_stop, primes, &array_max))
+    ull array_max = 1;
+    ull *primes = mmap(NULL, SIZE, PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE | MAP_NORESERVE, -1, sysconf(_SC_PAGESIZE));
+    if(primes == MAP_FAILED)
     {
+        perror("mmap");
+        return -2;
+    }
+
+    clock_t begin_primes = simple_for(primes_stop, primes, &array_max);
+    // -1 clock() error, -2 function error
+    if(begin_primes < 0)
+    {
+        if(begin_primes == -1)
+        {
+            if(munmap(primes, SIZE) == -1)
+            {
+                perror("munmap");
+            }
+        }
         return EXIT_FAILURE;
     }
 
