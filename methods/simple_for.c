@@ -1,5 +1,6 @@
 #define _GNU_SOURCE
 
+#include <time.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/mman.h>
@@ -7,18 +8,12 @@
 #include "methods.h"
 #include "../common.h"
 
-_Bool simple_for(ull primes_stop, ull* primes, ull* array_max)
+clock_t simple_for(ull primes_stop, ull* primes, ull* array_max)
 {
-    *array_max = 1;
-    primes = mmap(NULL, SIZEP, PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE | MAP_NORESERVE, -1, sysconf(_SC_PAGESIZE));
-    if(primes == MAP_FAILED)
-    {
-        perror("mmap");
-        return 0;
-    }
     primes[0] = 2;
-
     ull old_size = SIZEP;
+
+    clock_t begin = clock();
     /* number_curr will never be even, so it is useless to check if it is, by dividing it with 2 (primes[0]) */
     for(ull number_curr = 3; number_curr <= primes_stop; number_curr += 2)
     {
@@ -41,13 +36,13 @@ _Bool simple_for(ull primes_stop, ull* primes, ull* array_max)
             if(primes == MAP_FAILED)
             {
                 perror("mremap");
-                return 0;
+                return -2;
             }
 
             primes[*array_max - 1] = number_curr;
         }
     }
 
-    return 1;
+    return begin;
 }
 
