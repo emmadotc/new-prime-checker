@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "common.h"
 #include "args.h"
 
 void init_args(_Args* args)

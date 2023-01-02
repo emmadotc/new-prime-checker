@@ -11,25 +11,10 @@
 #include <limits.h>
 #include <sys/mman.h>
 
+#include "common.h"
+
 #include "args.h"
-
-#define SIZE (array_max * sizeof(unsigned long long))
-#define ull unsigned long long
-
-ull isqrt(ull i)
-{
-    ull l = 0;
-    ull r = i + 1;
-    while (l != r - 1)
-    {
-        ull m = (l + r) / 2;
-        if (m * m <= i)
-            l = m;
-        else
-            r = m;
-    }
-    return l;
-}
+#include "methods/methods.h"
 
 void show_help(char* argv0)
 {
@@ -67,46 +52,15 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    ull array_max = 1;
-    ull old_size = SIZE;
-
-    ull *primes = mmap64(NULL, SIZE, PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE | MAP_NORESERVE, -1, sysconf(_SC_PAGESIZE));
-    if(primes == MAP_FAILED)
-    {
-        perror("mmap");
-        return EXIT_FAILURE;
-    }
-    primes[0] = 2;
+    ull array_max = 0;
+    ull *primes = NULL;
 
     clock_t begin_primes = clock();
-    /* number_curr will never be even, so it is useless to check if it is, by dividing it with 2 (primes[0]) */
-    for(ull number_curr = 3; number_curr <= primes_stop; number_curr += 2)
+    if(!simple_for(primes_stop, primes, &array_max))
     {
-        _Bool is_prime = 1;
-
-        for(ull primes_indx = 0; (primes[primes_indx] <= isqrt(number_curr)) && (primes_indx < array_max); ++primes_indx)
-        {
-            if(number_curr % primes[primes_indx] == 0)
-            {
-                is_prime = 0;
-                break;
-            }
-        }
-
-        if(is_prime)
-        {
-            old_size = SIZE;
-            array_max += 1;
-            primes = mremap(primes, old_size, SIZE, MREMAP_MAYMOVE);
-            if(primes == MAP_FAILED)
-            {
-                perror("mremap");
-                return EXIT_FAILURE;
-            }
-
-            primes[array_max - 1] = number_curr;
-        }
+        return EXIT_FAILURE;
     }
+
     clock_t end_primes = clock();
 
     clock_t begin_print = clock();
