@@ -2,13 +2,13 @@ CC    = gcc
 
 FILES = main.c args.c common.c methods/simple_for.c
 WARNS = -Wall -Wextra -Wpedantic -Wconversion -Wvla
-OPTIM = -Os -march=native
+OPTIM = -Os
 
 default:
-	$(CC) -std=c99 $(OPTIM) $(WARNS) $(FILES) -o primes
+	$(CC) -std=c99 -march=native $(OPTIM) $(WARNS) $(FILES) -o primes
 
 debug:
-	$(CC) -std=c99 -g3 $(OPTIM) $(WARNS) $(FILES) -o primes
+	$(CC) -std=c99 -march=native -g3 $(WARNS) $(FILES) -o primes
 
 clean:
 	rm ./primes*
