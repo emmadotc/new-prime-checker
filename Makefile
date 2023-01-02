@@ -7,6 +7,9 @@ OPTIM = -Os -march=native
 default:
 	$(CC) -std=c99 $(OPTIM) $(WARNS) $(FILES) -o primes
 
+debug:
+	$(CC) -std=c99 -g3 $(OPTIM) $(WARNS) $(FILES) -o primes
+
 clean:
 	rm ./primes*
 

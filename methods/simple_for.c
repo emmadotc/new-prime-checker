@@ -8,9 +8,9 @@
 #include "methods.h"
 #include "../common.h"
 
-clock_t simple_for(ull primes_stop, ull* primes, ull* array_max)
+clock_t simple_for(ull primes_stop, ull** primes, ull* array_max)
 {
-    primes[0] = 2;
+    *primes[0] = 2;
     ull old_size = SIZEP;
 
     clock_t begin = clock();
@@ -19,9 +19,9 @@ clock_t simple_for(ull primes_stop, ull* primes, ull* array_max)
     {
         _Bool is_prime = 1;
 
-        for(ull primes_indx = 0; (primes[primes_indx] <= isqrt(number_curr)) && (primes_indx < *array_max); ++primes_indx)
+        for(ull primes_indx = 0; (*primes[primes_indx] <= isqrt(number_curr)) && (primes_indx < *array_max); ++primes_indx)
         {
-            if(number_curr % primes[primes_indx] == 0)
+            if(number_curr % *primes[primes_indx] == 0)
             {
                 is_prime = 0;
                 break;
@@ -32,14 +32,15 @@ clock_t simple_for(ull primes_stop, ull* primes, ull* array_max)
         {
             old_size = SIZEP;
             *array_max += 1;
-            primes = mremap(primes, old_size, SIZEP, MREMAP_MAYMOVE);
-            if(primes == MAP_FAILED)
+
+            *primes = mremap(*primes, old_size, SIZEP, MREMAP_MAYMOVE);
+            if(*primes == MAP_FAILED)
             {
                 perror("mremap");
                 return -2;
             }
 
-            primes[*array_max - 1] = number_curr;
+            *primes[*array_max - 1] = number_curr;
         }
     }
 

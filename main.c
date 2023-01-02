@@ -60,7 +60,7 @@ int main(int argc, char** argv)
         return -2;
     }
 
-    clock_t begin_primes = simple_for(primes_stop, primes, &array_max);
+    clock_t begin_primes = simple_for(primes_stop, &primes, &array_max);
     // -1 clock() error, -2 function error
     if(begin_primes < 0)
     {
