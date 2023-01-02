@@ -5,7 +5,7 @@ WARNS = -Wall -Wextra -Wpedantic -Wconversion -Wvla
 OPTIM = -Os
 
 default:
-	$(CC) -std=c99 -march=native $(OPTIM) $(WARNS) $(FILES) -o primes
+	$(CC) -std=c99 -march=native -g0 $(OPTIM) $(WARNS) $(FILES) -o primes
 
 debug:
 	$(CC) -std=c99 -march=native -g3 $(WARNS) $(FILES) -o primes
